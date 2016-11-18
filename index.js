@@ -89,7 +89,7 @@ function sendGenericMessage(senderID, messageText) {
 	
 }
 
-function sendTextMessage(recipientID, messageText){
+function sendTextMessage(recipientId, messageText){
     var messageData = {
       	recipient: {
 	    id: recipientId
