@@ -75,7 +75,7 @@ function receivedMessage(event) {
     if(messageText) {
         switch (messageText) {
 	    case 'generic':
-	        sendGenericMessage(senderID, messageText);
+	        sendGenericMessage(senderID);
 		break;
 	    default: 
 	        sendTextMessage(senderID, messageText);
@@ -86,8 +86,53 @@ function receivedMessage(event) {
     }
 }
 
-function sendGenericMessage(senderID, messageText) {
-	
+function sendGenericMessage(recipientId) {
+	var messageData = {
+        recipient: {
+            id: recipientId
+        }, 
+
+        message: {
+            attachement: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [{
+                        title: "rift",
+                        subtitle: "Next Generation virtual reality",
+                        item_url: "htpps://oculus.com/en-us/rift",
+                        image_url: "https://messengerdemo.parseapp.com/img/rift.png",
+                        buttons: [{
+                            type: "web_url",
+                            url:"https://www.oculus.com/en_us/rift",
+                            title: "Open Web URL"
+                        }, {
+                            type: "postback",
+                            title: "Call Postback",
+                            payload: "Payload for first bubble",
+                        }],
+
+                    }, {
+                        title: "touch",
+                        subtitle: "Your Hands, Now in VR",
+                        item_url: "https://www.oculus.com/en_us/touch/",
+                        image_url: "https://messengerdemo.parseapp.comm/img/touch.png",
+                        buttons: [{
+                            type: "web_url",
+                            url: "https://www.oculus.com/en_us/touch",
+                            title:"Open Web URL"
+                        }, {
+                            type: "postback",
+                            title: "Call Postback",
+                            payload: "Payload for second bubble",
+                        }]
+                    }]
+                }
+            }
+        }
+
+    };
+    callSendAPI(messageData);
 }
 
 function sendTextMessage(recipientId, messageText){
@@ -126,18 +171,6 @@ function callSendAPI(messageData){
     
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
