@@ -185,7 +185,7 @@ function receivedPostback(event) {
 
     console.log("Received postback for user %d and page %d with payload '%s' at %d", senderID, recipientID, payload, timeOfPostback);
 
-    sendTextMessage(sendID, "Postback called: " + payload);
+    sendTextMessage(senderID, "Postback called: " + payload);
 }
 
 
