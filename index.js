@@ -70,18 +70,18 @@ function receivedMessage(event) {
     var messageId = message.mid;
 
     var messageText = message.text;
-    var messageAttachements = message.attachements;
+    var messageAttachments = message.attachments;
 
     if(messageText) {
         switch (messageText) {
-	    case 'generic':
+	    case 'Oculus':
 	        sendGenericMessage(senderID);
 		break;
 	    default: 
 	        sendTextMessage(senderID, messageText);
 	}
 
-    } else if(messageAttachements) {
+    } else if(messageAttachments) {
     	sendTextMessage(senderID, "Message with attachement received");
     }
 }
