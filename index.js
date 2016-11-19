@@ -109,8 +109,8 @@ function sendGenericMessage(recipientId) {
                         }, {
                             type: "postback",
                             title: "Call Postback",
-                            payload: "Payload for first bubble",
-                        }],
+                            payload: "Payload for first bubble"
+                        }]
 
                     }, {
                         title: "touch",
@@ -124,7 +124,7 @@ function sendGenericMessage(recipientId) {
                         }, {
                             type: "postback",
                             title: "Call Postback",
-                            payload: "Payload for second bubble",
+                            payload: "Payload for second bubble"
                         }]
                     }]
                 }
