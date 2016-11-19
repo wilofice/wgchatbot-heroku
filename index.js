@@ -93,7 +93,7 @@ function sendGenericMessage(recipientId) {
         }, 
 
         message: {
-            attachement: {
+            attachment: {
                 type: "template",
                 payload: {
                     template_type: "generic",
