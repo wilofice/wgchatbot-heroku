@@ -6,6 +6,8 @@ const request = require('request')
 const app = express() 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
+var translate = require('./translate');
+
 app.set('port', (process.env.PORT || 5000));
 
 // Process application/x-www-form-urlencoded
@@ -31,10 +33,7 @@ app.get('/webhook', function(req, res) {
   }  
 });
 
-// Spin up the server
-app.listen(app.get('port'), function() {
-    console.log('running on port', app.get('port'))
-});
+
 
 app.post('/webhook', function(req, res){
 
@@ -80,7 +79,29 @@ function receivedMessage(event) {
 	        sendGenericMessage(senderID);
 		break;
 	    default: 
-	        sendTextMessage(senderID, messageText);
+
+            var params = {
+                text: messageText
+            };
+            var newmessage = '';
+            alchemy_language.sentiment(params, function (err, response) {
+                if (err)
+                    console.log('error:', err);
+                else {
+                    console.log(JSON.stringify(response, null, 2));
+                    //console.log(response);
+                    var docSentiment = response.docSentiment;
+
+                    var score = docSentiment.score;
+                    var typeSentiment = docSentiment.type;
+
+                    newmessage = "Type de sentiment :" + typeSentiment + "Score (probabilité de justesse): " + score; 
+
+                    //console.log(docSentiment);
+                }
+                    
+                });
+	        sendTextMessage(senderID, newmessage);
 	}
 
     } else if(messageAttachments) {
@@ -188,7 +209,10 @@ function receivedPostback(event) {
     sendTextMessage(senderID, "Postback called: " + payload);
 }
 
-
+// Spin up the server
+app.listen(app.get('port'), function() {
+    console.log('running on port', app.get('port'))
+});
 
 
 
