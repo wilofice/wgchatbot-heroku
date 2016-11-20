@@ -7,6 +7,7 @@ const app = express()
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 var translate = require('./translate');
+var alchemy_language = translate.alchemy_language;  
 
 app.set('port', (process.env.PORT || 5000));
 
