@@ -93,9 +93,9 @@ function sentiment(messageText) {
                         var score = docSentiment.score;
                         var typeSentiment = docSentiment.type;
                         var language = response.language;
-                        console.log('jexecute alchemy_language');
+                        console.log('alchemy_language executed');
 
-                        newmessage = typeSentiment + " score: " + score; 
+                        newmessage = typeSentiment + " avec un score de " + score; 
                         console.log("Text: " + messageText + " " + newmessage);
                         
                         
