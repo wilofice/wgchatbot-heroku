@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "1.15.2",
+    "deasync": "^0.1.9",
     "express": "4.14.0",
     "request": "2.79.0",
     "watson-developer-cloud": "git+https://github.com/watson-developer-cloud/node-sdk.git"
