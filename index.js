@@ -111,7 +111,7 @@ function receivedMessage(event) {
     var messageAttachments = message.attachments;
 
     if(messageText) {
-        var newmessage = alchemy(messageText);
+        //var newmessage = alchemy(messageText);
         switch (messageText) {
 	    case 'Oculus':
 	        sendGenericMessage(senderID);
