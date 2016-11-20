@@ -68,7 +68,7 @@ function alchemy(messageText) {
                     if (err)
                         console.log('error:', err);
                     else {
-                        console.log(response);
+                        console.log(JSON.stringify(response, null, 2), 'what the fuck');
                         //console.log(response);
                         var docSentiment = response.docSentiment;
 
