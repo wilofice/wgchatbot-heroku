@@ -18,11 +18,12 @@ alchemy_language.sentiment(params, function (err, response) {
       //console.log(response);
       var docSentiment = response.docSentiment;
 
-      //console.log(docSentiment);
+      console.log(docSentiment);
   }
     
 });
 
+/*
 
 
 var AlchemyDataNewsV1 = require('watson-developer-cloud/alchemy-data-news/v1');
@@ -38,12 +39,12 @@ var params = {
   end: 'now'
 };
 
-alchemy_data_news.getNews(params, function (err, news) {
+/*alchemy_data_news.getNews(params, function (err, news) {
   if (err)
     console.log('error:', err);
   else
     console.log(JSON.stringify(news, null, 2));
-});
+});*/
 
 /*var ConversationV1 = require('watson-developer-cloud/conversation/v1');
 
@@ -74,7 +75,7 @@ var language_translator = new LanguageTranslatorV2({
   "username": "832918e4-881f-4490-bc95-04e19bdcba71"
 });
 
-language_translator.translate({
+/*language_translator.translate({
   text: 'A sentence must have a verb', source : 'en', target: 'es' },
   function (err, translation) {
     if (err)
@@ -90,9 +91,10 @@ language_translator.identify({
       console.log('error:', err);
     else
       console.log(JSON.stringify(language, null, 2));
-});
+});*/
 
-exports.alchemy_language = alchemy_language;
+/*exports.alchemy_language = alchemy_language;
 exports.alchemy_data_news = alchemy_data_news;
 //exports.conversation = conversation;
 exports.language_translator = language_translator;
+*/

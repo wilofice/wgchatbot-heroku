@@ -6,8 +6,17 @@ const request = require('request')
 const app = express() 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
-var translate = require('./translate');
+//var translate = require('./translate');
 //var alchemy_language = translate.alchemy_language;  
+
+var AlchemyLanguageV1 = require('watson-developer-cloud/alchemy-language/v1');
+
+var alchemy_language = new AlchemyLanguageV1({
+  "url": "https://gateway-a.watsonplatform.net/calls",
+  "note": "It may take up to 5 minutes for this key to become active",
+  "apikey": "fbd50480e96d28fe48ef2587fd5e2714521bba8a"
+});
+
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -64,7 +73,7 @@ function alchemy(messageText) {
                 text: messageText
             };
     var newmessage = '';
-                translate.alchemy_language.sentiment(params, function (err, response) {
+                alchemy_language.sentiment(params, function (err, response) {
                     if (err)
                         console.log('error:', err);
                     else {
@@ -72,11 +81,12 @@ function alchemy(messageText) {
                         //console.log(response);
                         var docSentiment = response.docSentiment;
 
-                        var score = JSON.stringify(docSentiment.score);
-                        var typeSentiment = JSON.stringify(docSentiment.type);
+                        var score = docSentiment.score;
+                        var typeSentiment = docSentiment.type;
+                        var language = response.language;
                         console.log('jexecute alchemy_language');
 
-                        newmessage = "Type de sentiment :" + typeSentiment + "Score (probabilité de justesse): " + score; 
+                        newmessage = "Langage " + language + " Type de sentiment :" + typeSentiment + " Score (probabilité de justesse): " + score; 
                         return newmessage;
                         //console.log(docSentiment);
                     }
@@ -101,12 +111,13 @@ function receivedMessage(event) {
     var messageAttachments = message.attachments;
 
     if(messageText) {
+        var newmessage = alchemy(messageText);
         switch (messageText) {
 	    case 'Oculus':
 	        sendGenericMessage(senderID);
 		break;
 	    default: 
-            sendTextMessage(senderID, alchemy(messageText));
+            sendTextMessage(senderID, newmessage);
 	}
 
     } else if(messageAttachments) {
