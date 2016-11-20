@@ -7,7 +7,7 @@ const app = express()
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 var translate = require('./translate');
-var alchemy_language = translate.alchemy_language;  
+//var alchemy_language = translate.alchemy_language;  
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -58,6 +58,31 @@ app.post('/webhook', function(req, res){
             res.sendStatus(200);
         }
 });
+function alchemy(messageText) {
+
+    var params = {
+                text: messageText
+            };
+    var newmessage = '';
+                translate.alchemy_language.sentiment(params, function (err, response) {
+                    if (err)
+                        console.log('error:', err);
+                    else {
+                        console.log(response);
+                        //console.log(response);
+                        var docSentiment = response.docSentiment;
+
+                        var score = docSentiment.score;
+                        var typeSentiment = docSentiment.type;
+
+                        newmessage = "Type de sentiment :" + typeSentiment + "Score (probabilité de justesse): " + score; 
+                        return newmessage;
+                        //console.log(docSentiment);
+                    }
+                        
+                });
+	        
+}
 
 function receivedMessage(event) {
     var senderID = event.sender.id;
@@ -80,29 +105,7 @@ function receivedMessage(event) {
 	        sendGenericMessage(senderID);
 		break;
 	    default: 
-
-            var params = {
-                text: messageText
-            };
-            var newmessage = '';
-            alchemy_language.sentiment(params, function (err, response) {
-                if (err)
-                    console.log('error:', err);
-                else {
-                    console.log(JSON.stringify(response, null, 2));
-                    //console.log(response);
-                    var docSentiment = response.docSentiment;
-
-                    var score = docSentiment.score;
-                    var typeSentiment = docSentiment.type;
-
-                    newmessage = "Type de sentiment :" + typeSentiment + "Score (probabilité de justesse): " + score; 
-
-                    //console.log(docSentiment);
-                }
-                    
-                });
-	        sendTextMessage(senderID, newmessage);
+            sendTextMessage(senderID, alchemy(messageText));
 	}
 
     } else if(messageAttachments) {
