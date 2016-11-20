@@ -72,7 +72,7 @@ function alchemy(messageText) {
     var params = {
                 text: messageText
             };
-    var newmessage = '';
+    var newmessage = 'Detecting Sentiment failed';
                 alchemy_language.sentiment(params, function (err, response) {
                     if (err)
                         console.log('error:', err);
@@ -88,11 +88,12 @@ function alchemy(messageText) {
 
                         newmessage = "Message: " + messageText + " Langage " + language + " Type de sentiment :" + typeSentiment + " Score (probabilité de justesse): " + score; 
                         console.log(newmessage);
-                        return newmessage;
+                        
                         //console.log(docSentiment);
                     }
                         
                 });
+    return newmessage;
 	        
 }
 
