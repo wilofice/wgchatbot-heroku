@@ -95,7 +95,7 @@ function sentiment(messageText) {
                         var language = response.language;
                         console.log('alchemy_language executed');
 
-                        newmessage = typeSentiment + " avec un score de " + score; 
+                        newmessage = typeSentiment + " with a score of " + score; 
                         console.log("Text: " + messageText + " " + newmessage);
                         
                         
@@ -195,9 +195,9 @@ function receivedMessage(event) {
                 var detectedLang = identifylang(messageText);
                 var messageTranslatedFr = translatelang(messageText, detectedLang.language);
                 var detectedSentiment = sentiment(messageText);
-                var newmessage = "Langage detecté: " + detectedLang.language + " avec probabilité de " + detectedLang.score + "\n";
-                newmessage += "Traduction en français: " + messageTranslatedFr + "\n";
-                newmessage += "Sentiment " + detectedSentiment + "\n";
+                var newmessage = "Detected language " + detectedLang.language + " with a probability of " + detectedLang.score + "\n";
+                newmessage += "Translation in french " + messageTranslatedFr + "\n";
+                newmessage += "Feeling " + detectedSentiment + "\n";
 
                 console.log(newmessage);
 
