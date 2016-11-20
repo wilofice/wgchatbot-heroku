@@ -89,10 +89,11 @@ function alchemy(messageText) {
 
                         newmessage = "Message: " + messageText + " Langage " + language + " Type de sentiment :" + typeSentiment + " Score (probabilité de justesse): " + score; 
                         console.log(newmessage);
-                        done = true;
+                        
                         
                         //console.log(docSentiment);
                     }
+                    done = true;
                         
                 });
     require('deasync').loopWhile(function(){return !done});
