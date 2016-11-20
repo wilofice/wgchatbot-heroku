@@ -17,6 +17,14 @@ var alchemy_language = new AlchemyLanguageV1({
   "apikey": "fbd50480e96d28fe48ef2587fd5e2714521bba8a"
 });
 
+var LanguageTranslatorV2 = require('watson-developer-cloud/language-translator/v2');
+
+var language_translator = new LanguageTranslatorV2({
+  "url": "https://gateway.watsonplatform.net/language-translator/api",
+  "password": "kMDLTnaMLDqX",
+  "username": "832918e4-881f-4490-bc95-04e19bdcba71"
+});
+
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -67,7 +75,7 @@ app.post('/webhook', function(req, res){
             res.sendStatus(200);
         }
 });
-function alchemy(messageText) {
+function sentiment(messageText) {
 
     var params = {
                 text: messageText
@@ -87,8 +95,8 @@ function alchemy(messageText) {
                         var language = response.language;
                         console.log('jexecute alchemy_language');
 
-                        newmessage = "Message: " + messageText + " Langage " + language + " Type de sentiment :" + typeSentiment + " Score (probabilité de justesse): " + score; 
-                        console.log(newmessage);
+                        newmessage = "Type de sentiment: " + typeSentiment + " Score: " + score; 
+                        console.log("Text: " + messageText + " " + newmessage);
                         
                         
                         //console.log(docSentiment);
@@ -100,6 +108,60 @@ function alchemy(messageText) {
     return newmessage;
 	        
 }
+
+function identifylang(messageText) {
+
+    var done = false;
+    var exactlanguage = 'undefined';
+    var maxprobabilite = 0;
+
+    language_translator.identify({text: messageText }, function (err, language) {
+        if (err)
+        console.log('error:', err);
+        else {
+        console.log(JSON.stringify(language, null, 2));
+        var results = language.languages;
+        
+        var n = results.length;
+        var i = 0;
+        for(i = 0; i < n; i++) {
+            if(maxprobabilite < results[i].confidence) {
+                maxprobabilite = results[i].confidence;
+                exactlanguage = results[i].language;
+            }
+        }
+
+        console.log(exactlanguage, maxprobabilite);
+        }
+
+        
+        done = true;
+
+    });
+
+    require('deasync').loopWhile(function(){return !done});
+
+    return {language:exactlanguage, score:maxprobabilite};
+}
+
+function translatelang(messageText, srclang){
+    var done = false;
+    var phrasetranslated = 'undefined';
+    language_translator.translate({text: messageText, source : srclang, target: 'fr'}, function (err, translation) {
+        if (err)
+        console.log('error:', err);
+        else{
+            console.log(JSON.stringify(translation, null, 2));
+            phrasetranslated = (translation.translations)[0].translation;
+            console.log(phrasetranslated);
+        }
+        done = true;
+        
+    });
+    require('deasync').loopWhile(function(){return !done});
+    return phrasetranslated;
+}
+
 
 function receivedMessage(event) {
     var senderID = event.sender.id;
@@ -117,14 +179,25 @@ function receivedMessage(event) {
     var messageAttachments = message.attachments;
 
     if(messageText) {
-        var newmessage = alchemy(messageText);
-        console.log(newmessage);
+        
         switch (messageText) {
 	    case 'Oculus':
 	        sendGenericMessage(senderID);
 		break;
 	    default: 
-            sendTextMessage(senderID, newmessage);
+            {
+                var detectedLang = identifylang(messageText);
+                var messageTranslatedFr = translatelang(messageText, detectedLang.language);
+                var detectedSentiment = sentiment(messageText);
+                var newmessage = "Langage detecté: " + detectedLang + "\n";
+                newmessage += "Traduction en français: " + messageTranslatedFr + "\n";
+                newmessage += "Positivité/negativité du text: " + detectedSentiment + "\n";
+
+                console.log(newmessage);
+
+                sendTextMessage(senderID, newmessage);
+            }
+            
 	}
 
     } else if(messageAttachments) {
