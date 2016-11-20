@@ -146,21 +146,26 @@ function identifylang(messageText) {
 
 function translatelang(messageText, srclang){
     var done = false;
-    var phrasetranslated = 'undefined';
-    language_translator.translate({text: messageText, source : srclang, target: 'fr'}, function (err, translation) {
-        if (err)
-        console.log('error:', err);
-        else{
-            console.log(JSON.stringify(translation, null, 2));
-            phrasetranslated = (translation.translations)[0].translation;
-            console.log(phrasetranslated);
-        }
-        done = true;
+    var phrasetranslated = 'Translation failed';
+    if (srclang == 'fr') {
+        return messageText;
+    } else {
+        language_translator.translate({text: messageText, source : srclang, target: 'fr'}, function (err, translation) {
+            if (err)
+            console.log('error:', err);
+            else{
+                console.log(JSON.stringify(translation, null, 2));
+                phrasetranslated = (translation.translations)[0].translation;
+                console.log(phrasetranslated);
+            }
+            done = true;
         
-    });
-    require('deasync').loopWhile(function(){return !done});
-    console.log(phrasetranslated);
-    return phrasetranslated;
+        });
+        require('deasync').loopWhile(function(){return !done});
+        console.log(phrasetranslated);
+        return phrasetranslated;
+    }
+    
 }
 
 
@@ -192,7 +197,7 @@ function receivedMessage(event) {
                 var detectedSentiment = sentiment(messageText);
                 var newmessage = "Langage detecté: " + detectedLang.language + " avec probabilité de " + detectedLang.score + "\n";
                 newmessage += "Traduction en français: " + messageTranslatedFr + "\n";
-                newmessage += "Positivité/negativité du text: " + detectedSentiment + "\n";
+                newmessage += "Sentiment " + detectedSentiment + "\n";
 
                 console.log(newmessage);
 
