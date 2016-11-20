@@ -87,6 +87,7 @@ function alchemy(messageText) {
                         console.log('jexecute alchemy_language');
 
                         newmessage = "Langage " + language + " Type de sentiment :" + typeSentiment + " Score (probabilité de justesse): " + score; 
+                        console.log(newmessage);
                         return newmessage;
                         //console.log(docSentiment);
                     }
