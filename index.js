@@ -72,8 +72,9 @@ function alchemy(messageText) {
                         //console.log(response);
                         var docSentiment = response.docSentiment;
 
-                        var score = docSentiment.score;
-                        var typeSentiment = docSentiment.type;
+                        var score = JSON.stringify(docSentiment.score);
+                        var typeSentiment = JSON.stringify(docSentiment.type);
+                        console.log('jexecute alchemy_language');
 
                         newmessage = "Type de sentiment :" + typeSentiment + "Score (probabilité de justesse): " + score; 
                         return newmessage;
