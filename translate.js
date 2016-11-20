@@ -1,4 +1,4 @@
-var AlchemyLanguageV1 = require('watson-developer-cloud/alchemy-language/v1');
+/*var AlchemyLanguageV1 = require('watson-developer-cloud/alchemy-language/v1');
 
 var alchemy_language = new AlchemyLanguageV1({
   "url": "https://gateway-a.watsonplatform.net/calls",
@@ -21,7 +21,7 @@ alchemy_language.sentiment(params, function (err, response) {
       console.log(docSentiment);
   }
     
-});
+});*/
 
 /*
 
@@ -75,7 +75,7 @@ var language_translator = new LanguageTranslatorV2({
   "username": "832918e4-881f-4490-bc95-04e19bdcba71"
 });
 
-/*language_translator.translate({
+language_translator.translate({
   text: 'A sentence must have a verb', source : 'en', target: 'es' },
   function (err, translation) {
     if (err)
@@ -91,7 +91,7 @@ language_translator.identify({
       console.log('error:', err);
     else
       console.log(JSON.stringify(language, null, 2));
-});*/
+});
 
 /*exports.alchemy_language = alchemy_language;
 exports.alchemy_data_news = alchemy_data_news;
